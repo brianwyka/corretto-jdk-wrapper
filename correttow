@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+
+set -e
+
+# Script Arguments)
+WWRAPPER_FILE='.corretto/wrapper.properties'
+CORRETTO_JDK_VERSION="${1:-"$(grep version $WWRAPPER_FILE | cut -f 2 -d '=' | tr -d ' ' | tr -d '\r\n')"}"
+CORRETTO_JDK_DIST="${2:-"$(grep dist $WWRAPPER_FILE | cut -f 2 -d '=' | tr -d ' ' | tr -d '\r\n')"}"
+
+# Script Variables
+OS="$(echo "$CORRETTO_JDK_DIST" | cut -f 1 -d '-' | tr -d ' ' | tr -d '\r\n')"
+WRAPPER_DIR="$HOME/.corretto/wrapper"
+DIST_DIR="$WRAPPER_DIR/dist"
+CORRETTO_JDK_DIST_FULL="amazon-corretto-$CORRETTO_JDK_VERSION-$CORRETTO_JDK_DIST"
+CORRETTO_JDK_HOME="$WRAPPER_DIR/$CORRETTO_JDK_DIST_FULL"
+CORRETTO_DOWNLOAD_FILE="$CORRETTO_JDK_DIST_FULL.tar.gz"
+CORRETTO_DOWNLOAD_URL="https://corretto.aws/downloads/resources/$CORRETTO_JDK_VERSION/$CORRETTO_DOWNLOAD_FILE"
+
+# Special macosx handling
+if [ "macosx" = "$OS" ];
+then
+  CORRETTO_JDK_HOME="$CORRETTO_JDK_HOME/Contents/Home"
+fi
+
+# Check to see if the Corretto JDK home already exists
+if [ ! -d "$CORRETTO_JDK_HOME" ];
+then
+
+  # Make directory if necessary
+  mkdir -p "$DIST_DIR"
+
+  # Download JDK
+  >&2 echo "Downloading Corretto JDK $CORRETTO_JDK_VERSION...\c"
+  curl -sL "$CORRETTO_DOWNLOAD_URL" -o "$DIST_DIR/$CORRETTO_DOWNLOAD_FILE"
+  >&2 echo "complete"
+
+  # Extract
+  >&2 echo "Extracting Corretto JDK $CORRETTO_JDK_VERSION to $WRAPPER_DIR...\c"
+  tar -xf "$DIST_DIR/$CORRETTO_DOWNLOAD_FILE" -C "$WRAPPER_DIR"
+  if [ "macosx" = "$OS" ];
+  then
+    CORRETTO_JDK_BASE_VERSION="$( echo "$CORRETTO_JDK_VERSION" | cut -f 1 -d '.')"
+    mv "$WRAPPER_DIR/amazon-corretto-$CORRETTO_JDK_BASE_VERSION.jdk" "$WRAPPER_DIR/$CORRETTO_JDK_DIST_FULL"
+  fi
+  >&2 echo "complete"
+fi
+
+# Print out Corretto JDK Home
+echo "$CORRETTO_JDK_HOME"
