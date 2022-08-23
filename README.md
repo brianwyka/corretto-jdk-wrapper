@@ -29,8 +29,7 @@ dist = linux-x64
 
 Add the `correttow` executable file to the root of the repository.
 ```sh 
-curl -ksLO https://raw.githubusercontent.com/brianwyka/corretto-jdk-wrapper/main/correttow
-chmod +x correttow
+curl -ksLO https://raw.githubusercontent.com/brianwyka/corretto-jdk-wrapper/main/correttow & chmod +x correttow
 ```
 
 ## Usage
