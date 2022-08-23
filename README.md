@@ -1,5 +1,7 @@
 # Corretto JDK Wrapper
 
+[![Tags](https://img.shields.io/github/v/tag/brianwyka/corretto-jdk-wrapper)](https://github.com/brianwyka/corretto-jdk-wrapper/releases)
+
 A wrapper script to manage downloading Corretto JDK or re-using a previously downloaded version.  
 
 ## Compatibility
