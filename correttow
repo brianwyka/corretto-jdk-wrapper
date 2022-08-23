@@ -3,7 +3,8 @@
 set -e
 
 # Local Wrapper Properties File
-WRAPPER_FILE='.corretto/wrapper.properties'
+DIR="$(cd -- "$(dirname "$0")"; pwd -P)"
+WRAPPER_FILE="$DIR/.corretto/wrapper.properties"
 
 # Script Arguments override wrapper file if present
 CORRETTO_JDK_VERSION="${1:-"$(grep 'version' $WRAPPER_FILE | cut -f 2 -d '=' | tr -d ' ' | tr -d '\r\n')"}"
