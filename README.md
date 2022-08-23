@@ -4,8 +4,14 @@
 
 A wrapper script to manage downloading Corretto JDK or re-using a previously downloaded version.  
 
+See https://aws.amazon.com/corretto for `Corretto JDK` releases.
+
 ## Compatibility
 Currently, this is only compatible with Linux and MacOS and Java 11+.
+
+## Use Case
+The primary use case for this tooling is transient build agents, but it can also be used in conjunction with 
+other tools to improve developer experience.
 
 ## Installation
 
